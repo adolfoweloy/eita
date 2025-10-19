@@ -1,0 +1,8 @@
+Analyze the following user question and determine if they are asking about someone's birthday, birth date, or when someone was born.
+
+User question: "when was adolfo eloy born"
+
+Answer with only "YES" if the user wants to know when someone was born or their birthday/birth date.
+Answer with only "NO" if they are asking about anything else (theories, discoveries, achievements, etc.).
+
+Answer:

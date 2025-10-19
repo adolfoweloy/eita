@@ -2,14 +2,39 @@ import json
 import requests
 import sys
 
-# Get the prompt from command line arguments
+# Get the prompt from command line arguments or file
 if len(sys.argv) < 2:
-    print("Usage: python simple_request.py '<your question>'")
-    print("Example: python simple_request.py 'Explain REST APIs in one sentence'")
+    print("Usage:")
+    print("  python simple_request.py '<your question>'")
+    print("  python simple_request.py --file <filename>")
+    print("Examples:")
+    print("  python simple_request.py 'Explain REST APIs in one sentence'")
+    print("  python simple_request.py --file prompt.txt")
     sys.exit(1)
 
-# Join all arguments after the script name to allow multi-word questions
-prompt = ' '.join(sys.argv[1:])
+# Check if loading from file
+if sys.argv[1] == '--file' or sys.argv[1] == '-f':
+    if len(sys.argv) < 3:
+        print("Error: Please specify a filename after --file")
+        print("Usage: python simple_request.py --file <filename>")
+        sys.exit(1)
+    
+    filename = sys.argv[2]
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            prompt = file.read().strip()
+        print(f"Loaded prompt from file: {filename}")
+        print(f"Prompt content: {prompt[:100]}{'...' if len(prompt) > 100 else ''}")
+        print("-" * 50)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading file '{filename}': {e}")
+        sys.exit(1)
+else:
+    # Join all arguments after the script name to allow multi-word questions
+    prompt = ' '.join(sys.argv[1:])
 
 response = requests.post('http://localhost:11434/api/generate',
     json={
