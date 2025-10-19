@@ -1,16 +1,15 @@
-# Ollama
+# ollama-simple-generic
 
-To run this project, first thing to do is to install [Ollama](https://ollama.com/).
+This prototype is a simple script that sends a single prompt to the Ollama API and prints the response.
 
-Then, you can run the server with:
+
+## Running the Project
+
+- Install [Ollama](https://ollama.com/)
+- Run the Ollama server: `ollama server`
+
+Then run the script with a prompt:
 
 ```bash
-ollama server
+python simple_request.py 'Explain REST APIs in one sentence'
 ```
-
-You can then interact with the server using the Ollama CLI or API. But, the intention is to use this project as a base for further experiments.
-
-
-## Scripts
-
-- `simple_request.py`: run as a single request to the Ollama server using the API.
