@@ -4,25 +4,10 @@ import sys
 import re
 
 class BirthdayAgent:
-    def get_birthday(self, name):
-        # In a real implementation, this method would look up a database or API
-        # Here we use a hardcoded dictionary for demonstration purposes
-        birthdays = {
-            "Albert Einstein": "March 14, 1879",
-            "Isaac Newton": "January 4, 1643",
-            "Marie Curie": "November 7, 1867",
-            "Leonardo da Vinci": "April 15, 1452",
-            "William Shakespeare": "April 23, 1564",
-            "Nikola Tesla": "July 10, 1856",
-            "Charles Darwin": "February 12, 1809",
-            "Galileo Galilei": "February 15, 1564",
-            "Adolfo Eloy": "December 28, 1979"
-        }
-        return birthdays.get(name, f"Birth date unknown for {name}")
     
     def check_birthday_intent_with_llm(self, prompt):
         """Use LLM to determine if the user is asking about someone's birthday/birth date"""
-        intent_prompt = f"""Analyze the following user question and determine if they are asking about someone's birthday, birth date, or when someone was born.
+        intent_prompt = f"""Analyze the following user question and determine if they are asking about someone's birthday, birth date, or when someone was born (notice that they may use their own language instead of English).
 
 User question: "{prompt}"
 
@@ -51,20 +36,10 @@ Answer:"""
                 
                 # Check if the response contains "YES"
                 return "YES" in complete_response.upper()
-            else:
-                # Fallback to keyword-based detection if LLM fails
-                return self.fallback_keyword_detection(prompt)
         except Exception:
-            # Fallback to keyword-based detection if anything goes wrong
-            return self.fallback_keyword_detection(prompt)
-    
-    def fallback_keyword_detection(self, prompt):
-        """Fallback method using keywords if LLM is unavailable"""
-        birthday_keywords = [
-            'birthday', 'birth', 'born', 'birth date', 'birth year', 
-            'when was', 'what year', 'date of birth', 'born in', 'born on'
-        ]
-        return any(keyword in prompt.lower() for keyword in birthday_keywords)
+            print("Error: Failed to check birthday intent with LLM")
+            sys.exit(1)
+
     
     def extract_names_from_prompt(self, prompt):
         # Use LLM to determine if there's birthday intent
@@ -102,6 +77,21 @@ Answer:"""
         all_names = list(set(found_names + regex_matches))
         return all_names
 
+    def get_birthday(self, name):
+        # In a real implementation, this method would look up a database or API
+        # Here we use a hardcoded dictionary for demonstration purposes
+        birthdays = {
+            "Albert Einstein": "March 14, 1879",
+            "Isaac Newton": "January 4, 1643",
+            "Marie Curie": "November 7, 1867",
+            "Leonardo da Vinci": "April 15, 1452",
+            "William Shakespeare": "April 23, 1564",
+            "Nikola Tesla": "July 10, 1856",
+            "Charles Darwin": "February 12, 1809",
+            "Galileo Galilei": "February 15, 1564",
+            "Adolfo Eloy": "December 28, 1979"
+        }
+        return birthdays.get(name, f"Birth date unknown for {name}")
 
 # Get the prompt from command line arguments
 if len(sys.argv) < 2:
