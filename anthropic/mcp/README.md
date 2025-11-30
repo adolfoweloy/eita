@@ -57,13 +57,18 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-2. Install dependencies:
+2. This is needed to ensure that packages are installed from PyPI:
+```
+uv sync --index-url https://pypi.org/simple/  # If you need to reinstall packages
+```
+
+3. Install dependencies:
 
 ```bash
 pip install anthropic python-dotenv prompt-toolkit "mcp[cli]==1.8.0"
 ```
 
-3. Run the project
+4. Run the project
 
 ```bash
 python main.py
@@ -109,3 +114,11 @@ To fully implement the MCP features:
 ### Linting and Typing Check
 
 There are no lint or type checks implemented.
+
+### Troubleshooting
+
+When you see the following error, it means that the current model is overloaded and the simplest solution to that is to either retry or change the model in the `.env` file.
+
+```
+OverloadedError: Error code: 529
+```
