@@ -36,13 +36,18 @@ uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-3. Install dependencies:
+3. This is needed to ensure that packages are installed from PyPI:
+```
+uv sync --index-url https://pypi.org/simple/  # If you need to reinstall packages
+```
+
+4. Install dependencies:
 
 ```bash
 uv pip install -e .
 ```
 
-4. Run the project
+5. Run the project
 
 ```bash
 uv run main.py
@@ -86,6 +91,13 @@ Use the @ symbol followed by a document ID to include document content in your q
 
 ```
 > Tell me about @deposition.md
+```
+
+### Testing the MCP server only
+
+Just run the following command and you will also be able to interact with the MCP server using MCP inspector:
+```
+mcp dev mcp_server.py
 ```
 
 ### Commands
