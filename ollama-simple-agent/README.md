@@ -7,13 +7,18 @@ This prototype is a simple agent built on top of Ollama LLMs that can answer que
 
 ### Prerequisites
 - Install [Ollama](https://ollama.com/)
-- Activate the Python virtual environment from the project root:
+- Create a virtual environment in this project directory:
+  ```bash
+  cd ollama-simple-agent
+  python -m venv .venv
+  ```
+- Activate the virtual environment:
   ```bash
   source .venv/bin/activate
   ```
 - Install required dependencies:
   ```bash
-  pip install requests
+  pip install -r requirements.txt
   ```
 
 ### Running the Agent
@@ -32,9 +37,9 @@ This prototype is a simple agent built on top of Ollama LLMs that can answer que
    python birthday_agent.py 'When was Albert Einstein born?'
    ```
 
-**Alternative**: Run without activating the virtual environment:
+**Alternative**: Run without activating the virtual environment (from within the project directory):
 ```bash
-../.venv/bin/python birthday_agent.py 'When was Marie Curie born?'
+.venv/bin/python birthday_agent.py 'When was Marie Curie born?'
 ```
 
 ## How this works

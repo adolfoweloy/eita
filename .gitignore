@@ -1,0 +1,18 @@
+# Virtual environments
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+# Node modules (for TypeScript/JavaScript projects)
+**/node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
