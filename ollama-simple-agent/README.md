@@ -5,13 +5,36 @@ This prototype is a simple agent built on top of Ollama LLMs that can answer que
 
 ## Running the Project
 
+### Prerequisites
 - Install [Ollama](https://ollama.com/)
-- Run the Ollama server: `ollama server`
+- Activate the Python virtual environment from the project root:
+  ```bash
+  source .venv/bin/activate
+  ```
+- Install required dependencies:
+  ```bash
+  pip install requests
+  ```
 
-Then run the script with a prompt:
+### Running the Agent
+1. Start the Ollama server:
+   ```bash
+   ollama serve
+   ```
 
+2. Pull the required model (if not already available):
+   ```bash
+   ollama pull llama3.2:1b
+   ```
+
+3. Run the birthday agent with your question:
+   ```bash
+   python birthday_agent.py 'When was Albert Einstein born?'
+   ```
+
+**Alternative**: Run without activating the virtual environment:
 ```bash
-python simple_request.py 'What is the birthday of John Doe?'
+../.venv/bin/python birthday_agent.py 'When was Marie Curie born?'
 ```
 
 ## How this works
