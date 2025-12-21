@@ -6,6 +6,9 @@
 
 # Node modules (for TypeScript/JavaScript projects)
 **/node_modules/
+**/build/
+**/dist/
+package-lock.json
 
 # IDE
 .vscode/

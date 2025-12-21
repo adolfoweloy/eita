@@ -15,3 +15,4 @@ ollama run llama3.2:1b
 
 - **ollama-simple-generic**: A script that sends a single prompt to the Ollama API and prints the response.
 - **ollama-simple-agent**: A simple agent built on top of Ollama LLMs that can answer questions about some people's birthdays.
+- **mcp-todo**: A TypeScript-based Model Context Protocol (MCP) server for todo list management with persistent storage.
