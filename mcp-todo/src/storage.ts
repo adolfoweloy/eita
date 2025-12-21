@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Todo, TodoList } from './types.js';
+import { Todo, TodoList, TodoListSchema } from './types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,7 +26,8 @@ export async function loadTodos(): Promise<Todo[]> {
   await ensureDataFile();
 
   const data = await readFile(DATA_FILE, 'utf-8');
-  const todoList: TodoList = JSON.parse(data);
+  const parsed = JSON.parse(data);
+  const todoList = TodoListSchema.parse(parsed);
   return todoList.todos;
 }
 

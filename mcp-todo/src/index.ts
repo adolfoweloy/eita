@@ -17,6 +17,12 @@ import {
   markComplete,
   markIncomplete,
 } from './storage.js';
+import {
+  CreateTodoArgsSchema,
+  ListTodosArgsSchema,
+  UpdateTodoArgsSchema,
+  TodoIdArgsSchema,
+} from './types.js';
 
 const server = new Server(
   {
@@ -156,10 +162,19 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case 'create_todo': {
-        const todo = await createTodo(
-          args.title as string,
-          args.description as string | undefined
-        );
+        const result = CreateTodoArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const todo = await createTodo(result.data.title, result.data.description);
         return {
           content: [
             {
@@ -171,8 +186,19 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_todos': {
-        const filter = args.filter as 'all' | 'completed' | 'pending' | undefined;
-        const todos = await getTodos(filter);
+        const result = ListTodosArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const todos = await getTodos(result.data.filter);
         return {
           content: [
             {
@@ -184,18 +210,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'update_todo': {
-        const updates: { title?: string; description?: string; completed?: boolean } = {};
-        if (args.title !== undefined) updates.title = args.title as string;
-        if (args.description !== undefined) updates.description = args.description as string;
-        if (args.completed !== undefined) updates.completed = args.completed as boolean;
-
-        const todo = await updateTodo(args.id as string, updates);
+        const result = UpdateTodoArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const { id, ...updates } = result.data;
+        const todo = await updateTodo(id, updates);
         if (!todo) {
           return {
             content: [
               {
                 type: 'text',
-                text: `Todo with ID ${args.id} not found`,
+                text: `Todo with ID ${id} not found`,
               },
             ],
             isError: true,
@@ -212,13 +246,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'delete_todo': {
-        const success = await deleteTodo(args.id as string);
+        const result = TodoIdArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const success = await deleteTodo(result.data.id);
         if (!success) {
           return {
             content: [
               {
                 type: 'text',
-                text: `Todo with ID ${args.id} not found`,
+                text: `Todo with ID ${result.data.id} not found`,
               },
             ],
             isError: true,
@@ -228,20 +274,32 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: `Todo with ID ${args.id} deleted successfully`,
+              text: `Todo with ID ${result.data.id} deleted successfully`,
             },
           ],
         };
       }
 
       case 'mark_complete': {
-        const todo = await markComplete(args.id as string);
+        const result = TodoIdArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const todo = await markComplete(result.data.id);
         if (!todo) {
           return {
             content: [
               {
                 type: 'text',
-                text: `Todo with ID ${args.id} not found`,
+                text: `Todo with ID ${result.data.id} not found`,
               },
             ],
             isError: true,
@@ -258,13 +316,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'mark_incomplete': {
-        const todo = await markIncomplete(args.id as string);
+        const result = TodoIdArgsSchema.safeParse(args);
+        if (!result.success) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid arguments: ${result.error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const todo = await markIncomplete(result.data.id);
         if (!todo) {
           return {
             content: [
               {
                 type: 'text',
-                text: `Todo with ID ${args.id} not found`,
+                text: `Todo with ID ${result.data.id} not found`,
               },
             ],
             isError: true,
