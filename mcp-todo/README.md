@@ -36,6 +36,43 @@ You can test the server using the MCP Inspector:
 npx @modelcontextprotocol/inspector node build/index.js
 ```
 
+### Integration with OpenWebUI
+
+OpenWebUI is an open-source AI chat interface that supports MCP servers and is a good alternative to test MCP servers like this one locally when running on Linux. Usually for MacOS, Claude Desktop is easier to use.
+
+The [Local Development Guide](https://docs.openwebui.com/getting-started/advanced-topics/development/) provides all the steps to setup and run OpenWebUI.
+
+Before running OpenWebUI, you need a model that works well enough locally to test this MCP server project. I am using Ollama and the model that worked best for my limited laptop is what follows:
+
+```bash
+ollama run llama3.1:8b-instruct-q4_K_M
+```
+
+Once you have a valid model running, then the following steps should be enough to start Open WebUI:
+
+Run the frontend from the root directory of OpenWebUI
+
+```bash
+npm run dev
+```
+
+Then run the backend
+
+```bash
+cd backend
+./dev.sh
+```
+
+Once it is running, it can be accessed from `http://localhost:8080`. You will be prompted to create an account the first time you access it. 
+
+Create the account and the model should be already selected if you have the Ollama server running. The next step then is to add this MCP server to OpenWebUI by following these steps:
+
+1. Go to Settings by clicking on your user icon at the bottom left corner.
+2. Select Admin Settings from the bottom left corner.
+3. Go to External Tools
+4. Add an external tool selecting the type as MCP Streamable HTTP, set the URL as `http://localhost:3000` and set the name as `Todo MCP Server` (or any name you prefer). That should be enough to add the MCP server to OpenWebUI.
+
+
 ### Integration with Claude Code
 
 Add this server to your Claude Code MCP settings:
